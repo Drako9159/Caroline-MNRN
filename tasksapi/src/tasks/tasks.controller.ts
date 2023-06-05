@@ -36,7 +36,6 @@ export class TasksController {
   }
 
   @Get(':id')
-  @HttpCode(204)
   async findOne(@Param('id') id: string) {
     const task = await this.tasksService.findOne(id);
     if (!task) throw new NotFoundException('TASK_NOT_FOUND');
@@ -44,6 +43,7 @@ export class TasksController {
   }
 
   @Delete(':id')
+  @HttpCode(204)
   async delete(@Param('id') id: string) {
     const task = await this.tasksService.delete(id);
     if (!task) throw new NotFoundException('TASK_NOT_FOUND');
