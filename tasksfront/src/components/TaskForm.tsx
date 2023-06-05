@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { createTaskRequest } from "../api/tasks";
+import { useTasks } from "../context/useTasks";
 
 export default function TaskForm() {
   const [task, setTask] = useState({
@@ -8,22 +9,22 @@ export default function TaskForm() {
     done: false,
   });
 
-  function handleChange(e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) {
-    
-    setTask({...task, [e.target.name]: e.target.value })
+  const { createTask } = useTasks();
+
+  function handleChange(
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
+    setTask({ ...task, [e.target.name]: e.target.value });
   }
 
-  async function handleSubmit(e:FormEvent<HTMLFormElement>){
-    e.preventDefault()
-    const res = await createTaskRequest(task)
-    const data = await res.json()
-    console.log(data)
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    createTask(task);
   }
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        
         <input
           type="text"
           name="title"
@@ -41,8 +42,10 @@ export default function TaskForm() {
         ></textarea>
 
         <label className="inline-flex items-center gap-x-2" htmlFor="">
-          <input className="h-5 w-5 text-indigo-600" type="checkbox" 
-          onChange={() => setTask({ ...task, done: !task.done})}
+          <input
+            className="h-5 w-5 text-indigo-600"
+            type="checkbox"
+            onChange={() => setTask({ ...task, done: !task.done })}
           ></input>
           <span>Done</span>
         </label>
