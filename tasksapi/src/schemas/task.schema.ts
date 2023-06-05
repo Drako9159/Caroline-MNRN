@@ -5,8 +5,10 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 export class Task {
   @Prop({ unique: true, required: true, trim: true })
   title: string;
+  
   @Prop({ required: true, trim: true })
   description: string;
+
   @Prop({ default: false })
   done: string;
 }
